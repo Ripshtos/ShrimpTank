@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "163565756626",
+    "project_id": "shrimptank-f7e73",
+    "storage_bucket": "shrimptank-f7e73.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163565756626:android:e970913cd20930b7cb8d0b",
+        "android_client_info": {
+          "package_name": "com.rip.shrimptank"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeoLtH-jaXScwV7s2IwswRnY9bkgKZw4Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
