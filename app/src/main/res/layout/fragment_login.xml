@@ -80,7 +80,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="missing account"
+                android:text="missing account ? "
                 android:textColor="@color/black"
                 android:textSize="@dimen/mediumTextSize"
                 />

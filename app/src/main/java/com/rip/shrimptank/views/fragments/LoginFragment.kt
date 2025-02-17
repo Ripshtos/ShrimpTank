@@ -40,7 +40,7 @@ class LoginFragment : Fragment() {
         binding = FragmentLoginBinding.inflate(layoutInflater, container, false)
 
         binding.signinSignupText.setOnClickListener {
-            listener?.navigateToFrag(R.id.registerFragment)
+            listener?.navigateToFrag(R.id.action_loginFragment_to_registerFragment , R.id.loginFragment)
         }
 
         binding.loginBtn.setOnClickListener {

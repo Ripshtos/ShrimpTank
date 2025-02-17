@@ -2,8 +2,6 @@ package com.rip.shrimptank.views.activities
 
 import android.content.Context
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -32,7 +30,7 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         setContentView(binding.root)
 
         context = this
-        authViewModel.fetUserDetails(authViewModel.getid())
+        authViewModel.fetchUserDetails(authViewModel.getid())
 
         setUpToolbar()
 

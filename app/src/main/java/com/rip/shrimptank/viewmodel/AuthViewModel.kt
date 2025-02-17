@@ -81,7 +81,7 @@ class AuthViewModel @Inject constructor(
         firebaseRepository.login(email, password, callback)
     }
 
-    fun fetUserDetails(id:String){
+    fun fetchUserDetails(id:String){
         firebaseRepository.fetchUser(id)
     }
 
