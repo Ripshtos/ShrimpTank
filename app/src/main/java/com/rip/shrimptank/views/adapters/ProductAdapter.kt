@@ -19,7 +19,7 @@ class ProductAdapter(
 
         fun bind(product: Product) {
             binding.productName.text = product.name
-            binding.productPrice.text = "$${String.format("%.2f", product.price)}"
+            binding.productPrice.text = product.price.toString()
             Picasso.get().load(product.imageUrl).into(binding.productImage)
 
             binding.root.setOnClickListener { onProductClick(product) }

@@ -32,8 +32,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Optional title or heading
-        binding.titleText.text = "My Shop"
+        binding.titleText.text = "Shrimp Tank !"
 
         // Set up the RecyclerView
         val adapter = ProductAdapter(
