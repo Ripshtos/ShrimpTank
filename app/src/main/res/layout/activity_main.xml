@@ -31,6 +31,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.fragment.app.FragmentContainerView
@@ -55,7 +56,7 @@
         android:layout_gravity="bottom"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
-        app:backgroundTint="@color/teal_700" />
-<!--        app:menu="@menu/bottom_navigation" />-->
+        app:backgroundTint="@color/teal_700"
+        app:menu="@menu/bottom_navigation" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -6,33 +6,40 @@
     app:startDestination="@id/homeFragment">
 
 
-<!--    <fragment-->
-<!--        android:id="@+id/profileFragment"-->
-<!--        android:name="com.rip.shrimptank.view.fragments.ProfileFragment"-->
-<!--        android:label="Profile"-->
-<!--        tools:layout="@layout/fragment_profile">-->
-<!--        <action-->
-<!--            android:id="@+id/action_profile_to_editProfile"-->
-<!--            app:popUpToInclusive="true"-->
-<!--            app:popUpTo="@id/profileFragment"-->
-<!--            app:destination="@id/editProfileFragment" />-->
-<!--    </fragment>-->
+        <fragment
+            android:id="@+id/profileFragment"
+            android:name="com.rip.shrimptank.views.fragments.ProfileFragment"
+            android:label="Profile"
+            tools:layout="@layout/fragment_profile">
+            <action
+                android:id="@+id/action_profile_to_editProfile"
+                app:popUpToInclusive="true"
+                app:popUpTo="@id/profileFragment"
+                app:destination="@id/editProfileFragment" />
+        </fragment>
 
-<!--    <fragment-->
-<!--        android:id="@+id/editProfileFragment"-->
-<!--        android:name="com.rip.shrimptank.view.fragments.EditProfileFragment"-->
-<!--        android:label="Edit Profile"-->
-<!--        tools:layout="@layout/fragment_edit_profile">-->
+        <fragment
+            android:id="@+id/editProfileFragment"
+            android:name="com.rip.shrimptank.views.fragments.EditProfileFragment"
+            android:label="Edit Profile"
+            tools:layout="@layout/fragment_edit_profile">
 
-<!--        <action-->
-<!--            android:id="@+id/action_editProfile_to_profile"-->
-<!--            app:popUpToInclusive="true"-->
-<!--            app:popUpTo="@id/editProfileFragment"-->
-<!--            app:destination="@id/profileFragment" />-->
-<!--    </fragment>-->
+            <action
+                android:id="@+id/action_editProfile_to_profile"
+                app:popUpToInclusive="true"
+                app:popUpTo="@id/editProfileFragment"
+                app:destination="@id/profileFragment" />
+        </fragment>
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.rip.shrimptank.views.fragments.HomeFragment"
         android:label="HomeFragment" />
+
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.rip.shrimptank.views.fragments.CartFragment"
+        android:label="Cart"
+        tools:layout="@layout/fragment_cart" />
+
 </navigation>

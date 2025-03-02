@@ -2,6 +2,8 @@ package com.rip.shrimptank.views.activities
 
 import android.content.Context
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -35,12 +37,32 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         setUpToolbar()
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_home) as NavHostFragment
-
         navController = navHostFragment.navController
+
         setupActionBarWithNavController(navController, AppBarConfiguration(navController.graph))
         binding.bottomNavigationView.setupWithNavController(navController)
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_arrow)
+            supportActionBar?.apply {
+                setDisplayHomeAsUpEnabled(destination.id != R.id.homeFragment) // Enable back button except on home
+                setHomeAsUpIndicator(R.drawable.ic_back_arrow)
+            }
+        }
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_cart -> {
+                navController.navigate(R.id.cartFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -49,6 +71,10 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         binding.toolbar.apply {
             setTitleTextColor(ContextCompat.getColor(context,R.color.white))
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     override fun navigateToFrag(fragmentId: Int, popUpId: Int) {
