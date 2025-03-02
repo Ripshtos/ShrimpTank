@@ -1,9 +1,29 @@
 package com.rip.shrimptank.room
 
+import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.rip.shrimptank.room.AppDao
+import android.content.Context
+import com.rip.shrimptank.model.CartEntity
 
-//@Database(entities = [], version = 1, exportSchema = false)
+@Database(entities = [CartEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun appDao(): AppDao
+    abstract fun cartDao(): CartDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
+
+        fun getDatabase(context: Context): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "my_store_database"
+                ).build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
 }

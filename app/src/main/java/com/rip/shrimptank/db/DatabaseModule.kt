@@ -1,5 +1,6 @@
 package com.rip.shrimptank.db
 
+import com.rip.shrimptank.room.CartDao
 import android.content.Context
 import androidx.room.Room
 import com.rip.shrimptank.firebase.FirebaseRepository
@@ -17,20 +18,24 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DatabaseModule {
-
-    @Provides
-    fun provideAppDao(appDatabase: AppDatabase): AppDao = appDatabase.appDao()
+object AppModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase =
-        Room.databaseBuilder(
+    fun provideAppDatabase(
+        @ApplicationContext context: Context
+    ): AppDatabase {
+        return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            "local_event_hub_database"
-        )
-            .build()
+            "my_store_database"
+        ).build()
+    }
+
+    @Provides
+    fun provideCartDao(db: AppDatabase): CartDao {
+        return db.cartDao()
+    }
 
     @Provides
     fun provideDatabaseRepository(auth: FirebaseAuth,

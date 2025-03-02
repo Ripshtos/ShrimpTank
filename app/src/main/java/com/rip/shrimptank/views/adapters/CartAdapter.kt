@@ -4,15 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.rip.shrimptank.databinding.ItemCartBinding
-import com.rip.shrimptank.model.CartItem
+import com.rip.shrimptank.model.CartEntity
 import com.squareup.picasso.Picasso
 
-class CartAdapter(private val cartItems: List<CartItem>) :
+class CartAdapter(private val cartItems: List<CartEntity>) :
     RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
     class CartViewHolder(private val binding: ItemCartBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: CartItem) {
+        fun bind(item: CartEntity) {
             binding.textViewName.text = item.name
             binding.textViewPrice.text = "$${item.price}"
             binding.textViewQuantity.text = "Qty: ${item.quantity}"

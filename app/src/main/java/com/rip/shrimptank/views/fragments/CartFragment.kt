@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.rip.shrimptank.databinding.FragmentCartBinding
 import com.rip.shrimptank.interactions.FragmentChangeListener
-import com.rip.shrimptank.model.CartItem
+import com.rip.shrimptank.model.CartEntity
 import com.rip.shrimptank.utils.UserInteractions
 import com.rip.shrimptank.views.adapters.CartAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +21,7 @@ class CartFragment : Fragment() {
     private lateinit var binding: FragmentCartBinding
     private var listener: FragmentChangeListener? = null
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val cartItems = mutableListOf<CartItem>()
+    private val cartItems = mutableListOf<CartEntity>()
     private lateinit var cartAdapter: CartAdapter
 
     override fun onAttach(context: Context) {
@@ -65,7 +65,7 @@ class CartFragment : Fragment() {
             .addOnSuccessListener { result ->
                 cartItems.clear()
                 for (document in result) {
-                    val item = document.toObject(CartItem::class.java)
+                    val item = document.toObject(CartEntity::class.java)
                     cartItems.add(item)
                 }
                 cartAdapter.notifyDataSetChanged()
