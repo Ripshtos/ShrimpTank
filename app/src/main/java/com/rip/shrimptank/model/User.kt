@@ -4,7 +4,7 @@ import java.io.Serializable
 
 data class User(
     var id: String = "",
-    val name: String = "",
+    var name: String = "",
     val email: String = "",
     var avatar: String? = null,
     val createdAt: Long = System.currentTimeMillis(),
