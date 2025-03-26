@@ -45,10 +45,10 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            if (uri != null) {
-                selectedImageUri = uri
-                binding.avatar.setImageURI(uri)
-            } else {
+            uri?.let {
+                selectedImageUri = it
+                binding.avatar.setImageURI(it)
+            } ?: run {
                 Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
             }
         }
@@ -66,29 +66,10 @@ class RegisterFragment : Fragment() {
         }
 
         binding.signupBtn.setOnClickListener {
-
             val name = binding.name.text.toString().trim()
             val email = binding.email.text.toString().trim()
             val password = binding.password.text.toString().trim()
             val confirmPassword = binding.confirmPassword.text.toString().trim()
-            val user = User(name = name,email=email)
-
-            // Convert image to bitmap
-            binding.avatar.isDrawingCacheEnabled = true
-            binding.avatar.buildDrawingCache()
-            val bitmap = (binding.avatar.drawable as BitmapDrawable).bitmap
-            binding.progressBar.visibility = View.VISIBLE
-
-            if(bitmap != null){
-                Cloudinary.shared.add(user, bitmap, Cloudinary.Storage.CLOUDINARY) {
-                    requireActivity().runOnUiThread {
-                        Toast.makeText(requireContext(), "User registered successfully", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(requireContext(), MainActivity::class.java)
-                        startActivity(intent)
-                        requireActivity().finish()
-                    }
-                }
-            }
 
             if (selectedImageUri == null) {
                 Toast.makeText(requireContext(), "Please select a profile image", Toast.LENGTH_SHORT).show()
@@ -96,6 +77,7 @@ class RegisterFragment : Fragment() {
             }
 
             UserInteractions.showLoading(requireActivity())
+
             authViewModel.validateAndRegister(
                 selectedImageUri,
                 name,
@@ -103,12 +85,11 @@ class RegisterFragment : Fragment() {
                 password,
                 confirmPassword
             ) { status, message ->
-                binding.progressBar.visibility = View.GONE
+                UserInteractions.hideLoad()
                 if (status) {
                     val user = User(name = name, email = email)
-                    authViewModel.saveUser(user,selectedImageUri)
-                    val intent = Intent(requireContext(), MainActivity::class.java)
-                    startActivity(intent)
+                    authViewModel.saveUser(user, selectedImageUri)
+                    startActivity(Intent(requireContext(), MainActivity::class.java))
                     requireActivity().finish()
                 } else {
                     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
