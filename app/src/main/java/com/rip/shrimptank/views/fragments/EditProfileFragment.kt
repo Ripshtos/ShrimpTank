@@ -1,6 +1,8 @@
 package com.rip.shrimptank.views.fragments
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,9 +16,11 @@ import androidx.fragment.app.viewModels
 import com.rip.shrimptank.R
 import com.rip.shrimptank.databinding.FragmentEditProfileBinding
 import com.rip.shrimptank.interactions.FragmentChangeListener
+import com.rip.shrimptank.model.Cloudinary
 import com.rip.shrimptank.model.User
 import com.rip.shrimptank.utils.UserInteractions
 import com.rip.shrimptank.viewmodel.AuthViewModel
+import com.rip.shrimptank.views.activities.MainActivity
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,7 +33,7 @@ class EditProfileFragment : Fragment() {
     private var listener: FragmentChangeListener? = null
     private lateinit var pickImageLauncher: ActivityResultLauncher<String>
     private var selectedImageUri: Uri? = null
-    private var user: User? = null
+    private lateinit var user: User
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -42,7 +46,7 @@ class EditProfileFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        user = UserInteractions.userData
+        user = UserInteractions.userData!!
         pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
                 selectedImageUri = uri
@@ -56,8 +60,18 @@ class EditProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
+        super.onCreate(savedInstanceState)
+        pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                selectedImageUri = uri
+                binding.profileImage.setImageURI(uri)
+            }
+            else {
+                Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
+            }
+        }
         binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -68,18 +82,32 @@ class EditProfileFragment : Fragment() {
             pickImageLauncher.launch("image/*")
         }
 
-        if (user != null) {
-            Picasso.get().load(user?.avatar)
-                .placeholder(R.drawable.loader)
-                .error(R.drawable.placeholder)
-                .resize(200,200)
-                .centerCrop()
-                .into(binding.profileImage)
-            binding.name.setText(user?.name)
-        }
+        Picasso.get().load(user?.avatar)
+            .placeholder(R.drawable.loader)
+            .error(R.drawable.placeholder)
+            .resize(200,200)
+            .centerCrop()
+            .into(binding.profileImage)
+        binding.name.setText(user?.name)
 
         binding.updateBtn.setOnClickListener {
             val name = binding.name.text.toString().trim()
+
+            binding.profileImage.isDrawingCacheEnabled = true
+            binding.profileImage.buildDrawingCache()
+            val bitmap = (binding.profileImage.drawable as BitmapDrawable).bitmap
+
+            if (selectedImageUri != null) {
+                Cloudinary.shared.add(user, bitmap, Cloudinary.Storage.CLOUDINARY) {
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(requireContext(), "User updated successfully", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                }
+            }
+
             if (name.isNotEmpty()) {
                 UserInteractions.showLoading(requireActivity())
                 user?.name = name
@@ -95,9 +123,14 @@ class EditProfileFragment : Fragment() {
                         UserInteractions.showDlg(requireActivity(), message!!)
                     }
                 }
-            } else {
+            }
+            else {
                 UserInteractions.showDlg(requireActivity(), "Name input required!")
             }
+
+
+
+
         }
     }
 

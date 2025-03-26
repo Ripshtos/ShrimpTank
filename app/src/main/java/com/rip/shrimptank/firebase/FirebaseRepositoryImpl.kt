@@ -83,24 +83,9 @@ class FirebaseRepositoryImpl @Inject constructor(private val auth: FirebaseAuth,
             callback(true, "User Detail updated Successfully")
             return
         }
-        val storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(user.avatar!!)
-        storageRef.delete()
-            .addOnSuccessListener {
-                uploadImageToCloudinary(imageUri) { success, downloadUrl ->
-                    if (success) {
-                        user.avatar = downloadUrl
-                        usersRef.document(id).update(
-                            mapOf(
-                                "name" to user.name,
-                                "avatar" to user.avatar,
-                            )
-                        )
-                        callback(true, "User Detail updated Successfully")
-                    } else {
-                        callback(false, "Something went wrong")
-                    }
-                }
-            }
+
+        saveUser(user,imageUri)
+
     }
 
     override fun checkAuth(): Boolean {

@@ -74,7 +74,16 @@ object UserInteractions {
     }
 
     fun hideLoad() {
-        dlg?.dismiss()
+        dlg?.let { dialog ->
+            if (dialog.isShowing) {
+                try {
+                    dialog.dismiss()
+                } catch (e: IllegalArgumentException) {
+                    // The dialog's view is not attached to the window manager.
+                    e.printStackTrace()
+                }
+            }
+        }
         dlg = null
     }
 }
