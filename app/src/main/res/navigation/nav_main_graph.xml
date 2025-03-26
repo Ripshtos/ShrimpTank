@@ -42,4 +42,5 @@
         android:label="Cart"
         tools:layout="@layout/fragment_cart" />
 
+
 </navigation>

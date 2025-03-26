@@ -1,6 +1,7 @@
 package com.rip.shrimptank.firebase
 
 import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
 import com.rip.shrimptank.model.User
 import com.rip.shrimptank.utils.UserInteractions
@@ -14,6 +15,8 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.rip.shrimptank.ShrimpTank
+import com.rip.shrimptank.model.Cloudinary
 import javax.inject.Inject
 
 class FirebaseRepositoryImpl @Inject constructor(private val auth: FirebaseAuth, private val firebaseFireStore: FirebaseFirestore) :
@@ -58,7 +61,7 @@ class FirebaseRepositoryImpl @Inject constructor(private val auth: FirebaseAuth,
     override fun saveUser(user: User, imageUri: Uri) {
         val id = auth.currentUser?.uid
         user.id = id!!
-        uploadImageToFirebaseStorage(imageUri,id) { success, downloadUrl ->
+        uploadImageToCloudinary(imageUri) { success, downloadUrl ->
             if (success) {
                 user.avatar = downloadUrl
                 usersRef.document(id).set(user)
@@ -68,30 +71,33 @@ class FirebaseRepositoryImpl @Inject constructor(private val auth: FirebaseAuth,
         }
     }
 
+
     override fun updateUser(user: User, imageUri: Uri?, callback: (Boolean, String?) -> Unit) {
         val id = auth.currentUser?.uid
         user.id = id!!
-        if (imageUri == null){
+        if (imageUri == null) {
             val updates = hashMapOf<String, Any>(
                 "name" to user.name,
             )
             usersRef.document(id).update(updates)
-            callback(true,"User Detail updated Successfully")
+            callback(true, "User Detail updated Successfully")
             return
         }
         val storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(user.avatar!!)
         storageRef.delete()
             .addOnSuccessListener {
-                uploadImageToFirebaseStorage(imageUri,id) { success, downloadUrl ->
+                uploadImageToCloudinary(imageUri) { success, downloadUrl ->
                     if (success) {
                         user.avatar = downloadUrl
-                        usersRef.document(id).update(mapOf(
-                            "name" to user.name,
-                            "avatar" to user.avatar,
-                        ),)
-                        callback(true,"User Detail updated Successfully")
+                        usersRef.document(id).update(
+                            mapOf(
+                                "name" to user.name,
+                                "avatar" to user.avatar,
+                            )
+                        )
+                        callback(true, "User Detail updated Successfully")
                     } else {
-                        callback(false,"Something went wrong")
+                        callback(false, "Something went wrong")
                     }
                 }
             }
@@ -128,22 +134,21 @@ class FirebaseRepositoryImpl @Inject constructor(private val auth: FirebaseAuth,
         auth.signOut()
     }
 
-    private fun uploadImageToFirebaseStorage(imageUri: Uri,id:String, callback: (Boolean, String?) -> Unit) {
-        val storageReference: StorageReference = FirebaseStorage.getInstance().reference
-        val uniqueFileName = "images/users/${id}/profile.jpg" // Unique file path in the storage
-        val imageRef = storageReference.child(uniqueFileName)
+    private fun uploadImageToCloudinary(imageUri: Uri, callback: (Boolean, String?) -> Unit) {
+        try {
+            val context = ShrimpTank.Globals.context ?: throw IllegalStateException("Context is null")
+            val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
 
-        imageRef.putFile(imageUri)
-            .addOnSuccessListener { taskSnapshot ->
-                imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                    callback(true, downloadUri.toString())
-                }.addOnFailureListener { exception ->
-                    callback(false, exception.message)
-                }
-            }
-            .addOnFailureListener { exception ->
-                callback(false, exception.message)
-            }
+            Cloudinary.shared.uploadBitmap(bitmap, { imageUrl ->
+                callback(true, imageUrl)
+            }, { errorMessage ->
+                Log.e("Cloudinary", "Upload failed: $errorMessage")
+                callback(false, errorMessage)
+            })
+        } catch (e: Exception) {
+            Log.e("Cloudinary", "Error uploading image: ${e.message}", e)
+            callback(false, e.message)
+        }
     }
 
     private fun getFirebaseErrorMessage(exception: Exception?): String {

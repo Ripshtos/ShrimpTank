@@ -2,6 +2,7 @@ package com.rip.shrimptank.views.fragments
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,9 +13,11 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.rip.shrimptank.R
 import com.rip.shrimptank.databinding.FragmentRegisterBinding
 import com.rip.shrimptank.interactions.FragmentChangeListener
+import com.rip.shrimptank.model.Cloudinary
 import com.rip.shrimptank.model.User
 import com.rip.shrimptank.utils.UserInteractions
 import com.rip.shrimptank.views.activities.MainActivity
@@ -24,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
-    private lateinit var binding:FragmentRegisterBinding
+    private lateinit var binding: FragmentRegisterBinding
     private val authViewModel: AuthViewModel by viewModels()
     private var listener: FragmentChangeListener? = null
     private lateinit var pickImageLauncher: ActivityResultLauncher<String>
@@ -54,7 +57,7 @@ class RegisterFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
 
@@ -63,27 +66,52 @@ class RegisterFragment : Fragment() {
         }
 
         binding.signupBtn.setOnClickListener {
+
             val name = binding.name.text.toString().trim()
             val email = binding.email.text.toString().trim()
             val password = binding.password.text.toString().trim()
             val confirmPassword = binding.confirmPassword.text.toString().trim()
+            val user = User(name = name,email=email)
+
+            // Convert image to bitmap
+            binding.avatar.isDrawingCacheEnabled = true
+            binding.avatar.buildDrawingCache()
+            val bitmap = (binding.avatar.drawable as BitmapDrawable).bitmap
+            binding.progressBar.visibility = View.VISIBLE
+
+            if(bitmap != null){
+                Cloudinary.shared.add(user, bitmap, Cloudinary.Storage.CLOUDINARY) {
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(requireContext(), "User registered successfully", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                }
+            }
+
+            if (selectedImageUri == null) {
+                Toast.makeText(requireContext(), "Please select a profile image", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             UserInteractions.showLoading(requireActivity())
             authViewModel.validateAndRegister(
                 selectedImageUri,
                 name,
                 email,
-                password, confirmPassword
+                password,
+                confirmPassword
             ) { status, message ->
-                UserInteractions.hideLoad()
+                binding.progressBar.visibility = View.GONE
                 if (status) {
-                    val user = User(name = name,email=email)
+                    val user = User(name = name, email = email)
                     authViewModel.saveUser(user,selectedImageUri)
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
                 } else {
-                    UserInteractions.showDlg(requireActivity(), message!!)
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -99,7 +127,4 @@ class RegisterFragment : Fragment() {
         super.onDetach()
         listener = null
     }
-
-
-
 }

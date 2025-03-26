@@ -96,6 +96,10 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
 
+    // CLOUDINARY
+    implementation(libs.cloudinary.android)
+
+
     // RETROFIT
     implementation(libs.retrofit)
     implementation(libs.gson)

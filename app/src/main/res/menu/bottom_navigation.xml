@@ -4,6 +4,7 @@
         android:icon="@drawable/store_image"
         android:id="@+id/homeFragment"
         android:title="store" />
+
     <item
         android:icon="@drawable/ic_person"
         android:id="@+id/profileFragment"
