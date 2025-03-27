@@ -139,6 +139,8 @@ class FirebaseRepositoryImpl @Inject constructor(private val auth: FirebaseAuth,
 
     override fun logout() {
         auth.signOut()
+        UserInteractions.userId = ""
+        UserInteractions.userData = null
     }
 
     private fun uploadImageToCloudinary(imageUri: Uri, callback: (Boolean, String?) -> Unit) {
