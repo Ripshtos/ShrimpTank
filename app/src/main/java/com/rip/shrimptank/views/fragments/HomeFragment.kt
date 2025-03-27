@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.rip.shrimptank.R
 import com.rip.shrimptank.databinding.FragmentHomeBinding
 import com.rip.shrimptank.viewmodel.HomeViewModel
@@ -45,7 +46,7 @@ class HomeFragment : Fragment() {
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.action_add_post -> {
-                    // Handle add post action
+                    findNavController().navigate(R.id.action_homeFragment_to_addPostFragment)
                     true
                 }
                 else -> false

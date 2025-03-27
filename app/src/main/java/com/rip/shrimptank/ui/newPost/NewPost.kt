@@ -1,4 +1,4 @@
-package com.rip.shrimptank.ui.profile
+package com.rip.shrimptank.ui.newPost
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -18,14 +18,24 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.rip.shrimptank.R
-import com.rip.shrimptank.databinding.FragmentEditProfileBinding
-import com.squareup.picasso.Picasso
+import com.rip.shrimptank.databinding.FragmentNewPostBinding
 
-class EditMyProfile : Fragment() {
-
-    private var _binding: FragmentEditProfileBinding? = null
+class NewPost : Fragment() {
+    private var _binding: FragmentNewPostBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: EditMyProfileViewModel
+    private lateinit var viewModel: NewPostViewModel
+
+
+    private fun showPickImageLoading(isLoading: Boolean) {
+        binding.btnPickImage.isEnabled = !isLoading
+        binding.pickImageProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun showUploadLoading(isLoading: Boolean) {
+        binding.uploadButton.isEnabled = !isLoading
+        binding.uploadProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
 
     private val imageSelectionLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -42,11 +52,10 @@ class EditMyProfile : Fragment() {
                     ).show()
                 } else {
                     viewModel.selectedImageURI.postValue(imageUri)
-                    viewModel.imageChanged = true
-                    binding.ProfileImageView.setImageURI(imageUri)
+                    binding.tvShowImageView.setImageURI(imageUri)
                 }
             } catch (e: Exception) {
-                Log.d("EditMyProfile", "Error: $e")
+                Log.d("NewPost", "Error: $e")
                 Toast.makeText(
                     requireContext(), "Error processing result", Toast.LENGTH_SHORT
                 ).show()
@@ -58,30 +67,43 @@ class EditMyProfile : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentNewPostBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        viewModel = ViewModelProvider(this)[EditMyProfileViewModel::class.java]
+        viewModel = ViewModelProvider(this)[NewPostViewModel::class.java]
 
         initFields()
-        defineUpdateButtonClickListener()
+        defineUploadButtonClickListener()
         definePickImageClickListener()
 
-        viewModel.isUpdating.observe(viewLifecycleOwner) { isUpdating ->
-            showUpdateLoading(isUpdating)
+        viewModel.isUploading.observe(viewLifecycleOwner) { isUploading ->
+            showUploadLoading(isUploading)
         }
 
         return view
     }
 
-    private fun showPickImageLoading(isLoading: Boolean) {
-        binding.btnPickImage.isEnabled = !isLoading
-        binding.pickImageProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
+    private fun initFields() {
+        binding.editTextTextMultiLine.addTextChangedListener {
+            viewModel.description = it.toString().trim()
+        }
+        binding.typeTextNumber.addTextChangedListener {
+            viewModel.type = it.toString().toIntOrNull()
+        }
 
-    private fun showUpdateLoading(isLoading: Boolean) {
-        binding.updateButton.isEnabled = !isLoading
-        binding.updateProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        viewModel.descriptionError.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty())
+                binding.editTextTextMultiLine.error = it
+        }
+        viewModel.typeError.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty())
+                binding.typeTextNumber.error = it
+        }
+
+        viewModel.imageError.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty())
+                binding.btnPickImage.error = it
+        }
     }
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
@@ -92,31 +114,13 @@ class EditMyProfile : Fragment() {
         }
     }
 
-    private fun defineUpdateButtonClickListener() {
-        binding.updateButton.setOnClickListener {
-            viewModel.updateUser {
-                findNavController().navigate(R.id.action_edit_profile_to_profile)
+    private fun defineUploadButtonClickListener() {
+        binding.uploadButton.setOnClickListener {
+            showUploadLoading(true)
+            viewModel.createPost {
+                showUploadLoading(false)
+                findNavController().navigate(R.id.action_new_post_to_feed)
             }
-        }
-    }
-
-    private fun initFields() {
-        viewModel.loadUser()
-
-        binding.editTextName.addTextChangedListener {
-            viewModel.name = it.toString().trim()
-        }
-
-        viewModel.user.observe(viewLifecycleOwner) { user ->
-            if (user != null) {
-                binding.editTextName.setText(user.name)
-                Picasso.get().load(user.avatar).into(binding.ProfileImageView)
-            }
-        }
-
-        viewModel.nameError.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty())
-                binding.editTextName.error = it
         }
     }
 
@@ -130,10 +134,5 @@ class EditMyProfile : Fragment() {
     private fun defineImageSelectionCallBack() {
         val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
         imageSelectionLauncher.launch(intent)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

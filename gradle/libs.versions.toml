@@ -22,6 +22,7 @@ retrofit = "2.11.0"
 room = "2.6.1"
 google-maps = "18.1.0"
 play-services-location = "21.0.1"
+swiperefreshlayout = "1.1.0"
 
 
 [libraries]
@@ -56,6 +57,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

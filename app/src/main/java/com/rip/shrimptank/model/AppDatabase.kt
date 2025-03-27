@@ -4,13 +4,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.rip.shrimptank.ShrimpTank
+import com.rip.shrimptank.model.post.Post
+import com.rip.shrimptank.model.post.PostDAO
 import com.rip.shrimptank.model.user.User
 import com.rip.shrimptank.model.user.UserDAO
 
 
-@Database(entities = [User::class], version = 8, exportSchema = true)
+@Database(entities = [User::class, Post::class], version = 8, exportSchema = true)
 abstract class AppDatabaseRepository : RoomDatabase() {
     abstract fun userDao(): UserDAO
+    abstract fun postDao(): PostDAO
 }
 
 object AppDatabase {
