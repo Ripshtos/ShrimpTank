@@ -22,6 +22,7 @@ class PostModel private constructor() {
     private var executor = Executors.newSingleThreadExecutor()
     private val firebaseModel = PostFirebaseModel()
     private var posts: LiveData<MutableList<Post>>? = null
+    private var lastUpdateTime: LiveData<Long?>? = null
     val postsListLoadingState: MutableLiveData<LoadingState> =
         MutableLiveData(LoadingState.LOADED)
 
@@ -40,10 +41,13 @@ class PostModel private constructor() {
             posts = database.postDao().getAll()
         }
 
-        postsListLoadingState.postValue(LoadingState.LOADING)
-        val lastUpdate = database.postDao().getLastUpdateTime().value ?: 0L
+        if (lastUpdateTime == null) {
+            lastUpdateTime = database.postDao().getLastUpdateTime()
+        }
 
-        firebaseModel.getAllPostsSince(lastUpdate) { postsFromFirebase ->
+        postsListLoadingState.postValue(LoadingState.LOADING)
+
+        firebaseModel.getAllPostsSince(lastUpdateTime?.value ?: 0L) { postsFromFirebase ->
             executor.execute {
                 postsFromFirebase.forEach { post ->
                     CoroutineScope(Dispatchers.IO).launch {
@@ -56,8 +60,8 @@ class PostModel private constructor() {
                 }
                 postsListLoadingState.postValue(LoadingState.LOADED)
             }
+        }
     }
-}
 
     fun getUserPosts(): LiveData<MutableList<Post>> {
         refreshAllPosts()

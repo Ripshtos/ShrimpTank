@@ -2,22 +2,58 @@ package com.rip.shrimptank.model.user
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.rip.shrimptank.model.AppDatabase
+import com.rip.shrimptank.model.post.PostModel.LoadingState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.concurrent.Executors
 
 class UserModel private constructor() {
 
     private val database = AppDatabase.db
     private val firebaseModel = UserFirebaseModel()
-    private val users: LiveData<MutableList<User>>? = null
+    private var executor = Executors.newSingleThreadExecutor()
+    private var users: LiveData<MutableList<User>>? = null
+    private var lastUpdateTime: LiveData<Long?>? = null
+    val usersListLoadingState: MutableLiveData<LoadingState> =
+        MutableLiveData(LoadingState.LOADED)
 
 
     companion object {
         val instance: UserModel = UserModel()
+    }
+
+
+    fun getAllUsers(): LiveData<MutableList<User>> {
+        refreshAllUsers()
+        return users!!
+    }
+
+    fun refreshAllUsers() {
+        if (users == null) {
+            users = database.userDao().getAll()
+        }
+
+        if (lastUpdateTime == null) {
+            lastUpdateTime = database.userDao().getLastUpdateTime()
+        }
+
+        usersListLoadingState.postValue(LoadingState.LOADING)
+
+        firebaseModel.getAllUsersSince(lastUpdateTime?.value ?: 0L) { usersFromFirebase ->
+            executor.execute {
+                usersFromFirebase.forEach { user ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        database.userDao().insert(user)
+                    }
+                }
+                usersListLoadingState.postValue(LoadingState.LOADED)
+            }
+        }
     }
 
     fun getCurrentUser(): LiveData<User> {
@@ -37,7 +73,7 @@ class UserModel private constructor() {
 
     fun updateUser(user: User?, callback: () -> Unit) {
         firebaseModel.updateUser(user) {
-            updateCurrentUser {}
+            refreshAllUsers()
             callback()
         }
     }

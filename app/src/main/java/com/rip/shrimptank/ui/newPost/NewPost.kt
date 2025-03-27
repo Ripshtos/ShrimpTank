@@ -52,7 +52,7 @@ class NewPost : Fragment() {
                     ).show()
                 } else {
                     viewModel.selectedImageURI.postValue(imageUri)
-                    binding.tvShowImageView.setImageURI(imageUri)
+                    binding.postImageView.setImageURI(imageUri)
                 }
             } catch (e: Exception) {
                 Log.d("NewPost", "Error: $e")
@@ -84,16 +84,23 @@ class NewPost : Fragment() {
     }
 
     private fun initFields() {
-        binding.editTextTextMultiLine.addTextChangedListener {
+        binding.editTitleText.addTextChangedListener {
+            viewModel.title = it.toString().trim()
+        }
+        binding.editPostTextMultiLine.addTextChangedListener {
             viewModel.description = it.toString().trim()
         }
         binding.typeTextNumber.addTextChangedListener {
             viewModel.type = it.toString().toIntOrNull()
         }
 
+        viewModel.titleError.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty())
+                binding.editTitleText.error = it
+        }
         viewModel.descriptionError.observe(viewLifecycleOwner) {
             if (it.isNotEmpty())
-                binding.editTextTextMultiLine.error = it
+                binding.editPostTextMultiLine.error = it
         }
         viewModel.typeError.observe(viewLifecycleOwner) {
             if (it.isNotEmpty())
@@ -119,7 +126,7 @@ class NewPost : Fragment() {
             showUploadLoading(true)
             viewModel.createPost {
                 showUploadLoading(false)
-                findNavController().navigate(R.id.action_new_post_to_feed)
+                findNavController().navigate(R.id.action_new_post_to_explore)
             }
         }
     }

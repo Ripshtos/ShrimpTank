@@ -14,6 +14,12 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+
+    <fragment
+        android:id="@+id/explore"
+        android:name="com.rip.shrimptank.ui.explore.Explore"
+        android:label="Explore">
+    </fragment>
     <fragment
         android:id="@+id/profile"
         android:name="com.rip.shrimptank.ui.profile.Profile"
@@ -25,6 +31,7 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+
     <fragment
         android:id="@+id/editMyProfile"
         android:name="com.rip.shrimptank.ui.profile.EditMyProfile"
@@ -43,7 +50,7 @@
         android:label="fragment_new_post"
         tools:layout="@layout/fragment_new_post">
         <action
-            android:id="@+id/action_new_post_to_feed"
+            android:id="@+id/action_new_post_to_explore"
             app:destination="@id/homeFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />

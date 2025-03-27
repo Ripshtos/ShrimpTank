@@ -3,10 +3,12 @@ package com.rip.shrimptank.model.user
 import android.net.Uri
 import android.util.Log
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.memoryCacheSettings
 import com.rip.shrimptank.model.Cloudinary
+import com.rip.shrimptank.model.post.Post
 
 class UserFirebaseModel {
 
@@ -21,6 +23,17 @@ class UserFirebaseModel {
             setLocalCacheSettings(memoryCacheSettings { })
         }
         db.firestoreSettings = settings
+    }
+
+    fun getAllUsersSince(since: Long, callback: (List<User>) -> Unit) {
+        db.collection(USERS_COLLECTION_PATH)
+            .whereGreaterThanOrEqualTo("updatedAt", since)
+            .get().addOnSuccessListener {
+                callback(it.toObjects(User::class.java))
+            }.addOnFailureListener {
+                Log.d("Error", "Can't get all users: " + it.message)
+                callback(listOf())
+            }
     }
 
     fun addUserImage(user: User, selectedImageUri: Uri, callback: () -> Unit) {

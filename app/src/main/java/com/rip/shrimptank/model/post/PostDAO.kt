@@ -23,4 +23,7 @@ interface PostDAO {
 
     @Query("SELECT MAX(updatedAt) FROM post")
     fun getLastUpdateTime(): LiveData<Long?>
+
+    @Query("SELECT MAX(updatedAt) FROM post")
+    fun getLastUpdateTimeDirectly(): Long?
 }

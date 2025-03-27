@@ -26,7 +26,7 @@ class PostFirebaseModel {
 
     fun getAllPostsSince(since: Long, callback: (List<Post>) -> Unit) {
         db.collection(POSTS_COLLECTION_PATH)
-            .whereGreaterThanOrEqualTo("updatedAt", Timestamp(since, 0))
+            .whereGreaterThanOrEqualTo("updatedAt", since)
             .get().addOnSuccessListener {
                 callback(it.toObjects(Post::class.java))
             }.addOnFailureListener {

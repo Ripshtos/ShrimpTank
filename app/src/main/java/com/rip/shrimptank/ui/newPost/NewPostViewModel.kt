@@ -12,8 +12,10 @@ import java.util.UUID
 
 class NewPostViewModel : ViewModel() {
     var selectedImageURI: MutableLiveData<Uri> = MutableLiveData()
+    var title: String = ""
     var description: String = ""
     var type: Int? = null
+    var titleError = MutableLiveData("")
     var descriptionError = MutableLiveData("")
     var typeError = MutableLiveData("")
     var imageError = MutableLiveData("")
@@ -30,7 +32,7 @@ class NewPostViewModel : ViewModel() {
                 UUID.randomUUID().toString(),
                 type!!,
                 userId,
-                "title",
+                title,
                 description
             )
 
@@ -47,6 +49,10 @@ class NewPostViewModel : ViewModel() {
     ): Boolean {
         var valid = true
 
+        if (title.isEmpty()) {
+            titleError.postValue("Title cannot be empty")
+            valid = false
+        }
         if (description.isEmpty()) {
             descriptionError.postValue("Description cannot be empty")
             valid = false
@@ -56,7 +62,7 @@ class NewPostViewModel : ViewModel() {
             typeError.postValue("Type cannot be empty")
             valid = false
         } else if (type!! < 1 || type!! > 10) {
-            typeError.postValue("Please rate the tvShow between 1-10")
+            typeError.postValue("Please add type between 1-10")
             valid = false
         }
 
