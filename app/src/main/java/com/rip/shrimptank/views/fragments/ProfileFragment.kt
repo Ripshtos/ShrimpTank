@@ -49,33 +49,31 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Show loading spinner
-        binding.profileDetailWrapperLayout.visibility = View.GONE
+        // Show loading state
+        binding.profileDetailWrapperLayout.visibility = View.VISIBLE
         binding.loadingSpinner.visibility = View.VISIBLE
+        binding.name.setText("Loading...")
+        binding.email.setText("Loading...")
 
-        // Load user data
-        user = UserInteractions.userData
+        val user = UserInteractions.userData
 
         if (user != null) {
-            Picasso.get()
-                .load(user?.avatar)
-                .placeholder(R.drawable.loader)
-                .error(R.drawable.placeholder)
-                .resize(200, 200)
-                .centerCrop()
-                .into(binding.profileImage)
-
-            binding.name.setText(user?.name)
-            binding.email.setText(user?.email)
+            loadUserIntoUI(user)
+        } else {
+            val userId = authViewModel.getid()
+            authViewModel.fetchUserDetails(userId) { fetchedUser ->
+                if (fetchedUser != null) {
+                    UserInteractions.userData = fetchedUser
+                    loadUserIntoUI(fetchedUser)
+                } else {
+                    binding.name.setText("Failed to load name")
+                    binding.email.setText("Failed to load email")
+                    binding.loadingSpinner.visibility = View.GONE
+                }
+            }
         }
 
-        // Hide loading spinner and show UI
-        binding.loadingSpinner.visibility = View.GONE
-        binding.profileDetailWrapperLayout.visibility = View.VISIBLE
-
         binding.editBtn.setOnClickListener {
-            // Optionally pass user data
-            // val bundle = Bundle().apply { putSerializable("user", user) }
             listener?.navigateToFrag(R.id.action_profile_to_editProfile, R.id.profileFragment)
         }
 
@@ -85,4 +83,20 @@ class ProfileFragment : Fragment() {
             requireActivity().finish()
         }
     }
+
+    private fun loadUserIntoUI(user: User) {
+        Picasso.get()
+            .load(user.avatar)
+            .placeholder(R.drawable.loader)
+            .error(R.drawable.placeholder)
+            .resize(200, 200)
+            .centerCrop()
+            .into(binding.profileImage)
+
+        binding.name.setText(user.name)
+        binding.email.setText(user.email)
+
+        binding.loadingSpinner.visibility = View.GONE
+    }
+
 }
