@@ -18,32 +18,6 @@ object UserInteractions {
     var userData: User? = null
     private var dlg: AlertDialog? = null
 
-    fun chkNet(ctx: Context): Boolean {
-        val cm = ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager ?: return false
-        val network = cm.activeNetwork ?: return false
-        val caps = cm.getNetworkCapabilities(network) ?: return false
-        return caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || caps.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
-    }
-
-    fun timeAgo(ts: Long): String {
-        val now = System.currentTimeMillis()
-        val diff = now - ts
-
-        val sec = TimeUnit.MILLISECONDS.toSeconds(diff)
-        val min = TimeUnit.MILLISECONDS.toMinutes(diff)
-        val hr = TimeUnit.MILLISECONDS.toHours(diff)
-        val day = TimeUnit.MILLISECONDS.toDays(diff)
-
-        return when {
-            sec < 60 -> "Just now"
-            min < 60 -> "$min minutes ago"
-            hr < 24 -> "$hr hours ago"
-            day < 7 -> "$day days ago"
-            day < 30 -> "${day / 7} weeks ago"
-            else -> "${day / 30} months ago"
-        }
-    }
-
     fun showDlg(ctx: Context, msg: String) {
         MaterialAlertDialogBuilder(ctx)
             .setMessage(msg)

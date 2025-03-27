@@ -9,6 +9,7 @@ interface FirebaseRepository {
     fun login(email: String, password: String,callback: (Boolean, String?) -> Unit)
     fun saveUser(user: User, imageUri: Uri)
     fun updateUser(user: User,imageUri:Uri?,callback: (Boolean, String?) -> Unit)
+    fun checkIfUserLoggedIn(callback: (User?) -> Unit)
     fun checkAuth():Boolean
     fun getid():String
     fun fetchUser(id:String)

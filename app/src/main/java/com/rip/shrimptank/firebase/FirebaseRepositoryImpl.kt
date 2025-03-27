@@ -115,6 +115,28 @@ class FirebaseRepositoryImpl @Inject constructor(private val auth: FirebaseAuth,
             }
     }
 
+    override fun checkIfUserLoggedIn(callback: (User?) -> Unit) {
+        val uid = auth.currentUser?.uid
+        if (uid == null) {
+            callback(null)
+            return
+        }
+
+        usersRef.document(uid)
+            .get()
+            .addOnSuccessListener { doc ->
+                if (doc.exists()) {
+                    val user = doc.toObject(User::class.java)
+                    callback(user)
+                } else {
+                    callback(null)
+                }
+            }
+            .addOnFailureListener {
+                callback(null)
+            }
+    }
+
     override fun logout() {
         auth.signOut()
     }

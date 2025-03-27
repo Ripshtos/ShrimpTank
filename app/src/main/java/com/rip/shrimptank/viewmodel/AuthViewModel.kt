@@ -85,6 +85,10 @@ class AuthViewModel @Inject constructor(
         firebaseRepository.fetchUser(id)
     }
 
+    fun checkIfUserLoggedIn(callback: (User?) -> Unit) {
+        firebaseRepository.checkIfUserLoggedIn(callback)
+    }
+
     fun saveUser(user: User, imageUri: Uri?) {
         firebaseRepository.saveUser(user,imageUri!!)
     }
