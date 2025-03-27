@@ -12,7 +12,7 @@ interface FirebaseRepository {
     fun checkIfUserLoggedIn(callback: (User?) -> Unit)
     fun checkAuth():Boolean
     fun getid():String
-    fun fetchUser(id:String)
+    fun fetchUser(id:String, callback: (User?) -> Unit)
     fun logout()
 
 }

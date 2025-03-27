@@ -99,7 +99,7 @@ class FirebaseRepositoryImpl @Inject constructor(private val auth: FirebaseAuth,
         return auth.currentUser!!.uid
     }
 
-    override fun fetchUser(id: String) {
+    override fun fetchUser(id: String,callback: (User?) -> Unit) {
         usersRef.document(id)
             .get()
             .addOnSuccessListener { document ->

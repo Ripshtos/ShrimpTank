@@ -15,6 +15,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.rip.shrimptank.R
 import com.rip.shrimptank.databinding.ActivityMainBinding
 import com.rip.shrimptank.interactions.FragmentChangeListener
+import com.rip.shrimptank.utils.UserInteractions
 import com.rip.shrimptank.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,8 +33,13 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         setContentView(binding.root)
 
         context = this
-        authViewModel.fetchUserDetails(authViewModel.getid())
-
+        authViewModel.fetchUserDetails(authViewModel.getid()) { user ->
+            if (user != null) {
+                com.rip.shrimptank.utils.UserInteractions.userData = user
+            } else {
+                UserInteractions.showDlg(this, "Failed to load user profile.")
+            }
+        }
         setUpToolbar()
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_home) as NavHostFragment
