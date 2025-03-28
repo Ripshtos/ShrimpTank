@@ -10,6 +10,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresExtension
@@ -20,6 +22,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.rip.shrimptank.R
 import com.rip.shrimptank.databinding.FragmentEditPostBinding
+import com.rip.shrimptank.model.post.PostType
 import com.squareup.picasso.Picasso
 
 class EditPost : Fragment() {
@@ -94,7 +97,7 @@ class EditPost : Fragment() {
 
         binding.editPostTitleMultiLine.setText(currentPost.title)
         binding.editPostTextMultiLine.setText(currentPost.text)
-        binding.typeTextNumber.setText(currentPost.type.toString())
+        binding.typeAutoCompleteTextView.setText(currentPost.type.toString(), false)
 
         binding.editPostTitleMultiLine.addTextChangedListener {
             viewModel.title = it.toString().trim()
@@ -102,8 +105,10 @@ class EditPost : Fragment() {
         binding.editPostTextMultiLine.addTextChangedListener {
             viewModel.description = it.toString().trim()
         }
-        binding.typeTextNumber.addTextChangedListener {
-            viewModel.type = it.toString().toIntOrNull()
+
+        binding.typeAutoCompleteTextView.setAdapter(ArrayAdapter(requireContext(), R.layout.list_item, PostType.entries.toTypedArray()))
+        binding.typeAutoCompleteTextView.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+            viewModel.type = PostType.valueOf(parent.getItemAtPosition(position).toString())
         }
 
         viewModel.selectedImageURI.observe(viewLifecycleOwner) { uri ->
@@ -121,7 +126,7 @@ class EditPost : Fragment() {
         }
         viewModel.typeError.observe(viewLifecycleOwner) {
             if (it.isNotEmpty())
-                binding.typeTextNumber.error = it
+                binding.typeAutoCompleteTextView.error = it
         }
     }
 

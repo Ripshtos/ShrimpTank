@@ -10,15 +10,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresExtension
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.rip.shrimptank.R
 import com.rip.shrimptank.databinding.FragmentNewPostBinding
+import com.rip.shrimptank.model.post.PostDAO
+import com.rip.shrimptank.model.post.PostType
 
 class NewPost : Fragment() {
     private var _binding: FragmentNewPostBinding? = null
@@ -90,8 +96,10 @@ class NewPost : Fragment() {
         binding.editPostTextMultiLine.addTextChangedListener {
             viewModel.description = it.toString().trim()
         }
-        binding.typeTextNumber.addTextChangedListener {
-            viewModel.type = it.toString().toIntOrNull()
+
+        binding.typeAutoCompleteTextView.setAdapter(ArrayAdapter(requireContext(), R.layout.list_item, PostType.entries.toTypedArray()))
+        binding.typeAutoCompleteTextView.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+            viewModel.type = PostType.valueOf(parent.getItemAtPosition(position).toString())
         }
 
         viewModel.titleError.observe(viewLifecycleOwner) {
@@ -104,7 +112,7 @@ class NewPost : Fragment() {
         }
         viewModel.typeError.observe(viewLifecycleOwner) {
             if (it.isNotEmpty())
-                binding.typeTextNumber.error = it
+                binding.typeAutoCompleteTextView.error = it
         }
 
         viewModel.imageError.observe(viewLifecycleOwner) {

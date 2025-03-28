@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.rip.shrimptank.model.post.Post
 import com.rip.shrimptank.model.post.PostModel
+import com.rip.shrimptank.model.post.PostType
 
 class EditPostViewModel : ViewModel() {
     var imageChanged = false
@@ -13,7 +14,7 @@ class EditPostViewModel : ViewModel() {
 
     var title: String? = null
     var description: String? = null
-    var type: Int? = null
+    var type: PostType? = null
     var titleError = MutableLiveData("")
     var descriptionError = MutableLiveData("")
     var typeError = MutableLiveData("")
@@ -31,7 +32,7 @@ class EditPostViewModel : ViewModel() {
         if (validatePostUpdate()) {
             val updatedPost = Post(
                 post!!.id,
-                post!!.type,
+                type!!,
                 post!!.userId,
                 title!!,
                 description!!,
@@ -63,10 +64,6 @@ class EditPostViewModel : ViewModel() {
         }
         if (type == null) {
             typeError.postValue("Type cannot be empty")
-            return false
-        }
-        if (type!! < 1 || type!! > 10) {
-            typeError.postValue("Please enter type between 1-10")
             return false
         }
         return true

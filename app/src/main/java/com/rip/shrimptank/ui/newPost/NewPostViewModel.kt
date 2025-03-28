@@ -8,13 +8,14 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.rip.shrimptank.model.post.Post
 import com.rip.shrimptank.model.post.PostModel
+import com.rip.shrimptank.model.post.PostType
 import java.util.UUID
 
 class NewPostViewModel : ViewModel() {
     var selectedImageURI: MutableLiveData<Uri> = MutableLiveData()
     var title: String = ""
     var description: String = ""
-    var type: Int? = null
+    var type: PostType? = null
     var titleError = MutableLiveData("")
     var descriptionError = MutableLiveData("")
     var typeError = MutableLiveData("")
@@ -57,12 +58,8 @@ class NewPostViewModel : ViewModel() {
             descriptionError.postValue("Description cannot be empty")
             valid = false
         }
-        Log.d("NewPostViewModel", "Type: $type")
         if (type == null) {
             typeError.postValue("Type cannot be empty")
-            valid = false
-        } else if (type!! < 1 || type!! > 10) {
-            typeError.postValue("Please add type between 1-10")
             valid = false
         }
 

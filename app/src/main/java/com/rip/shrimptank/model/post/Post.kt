@@ -11,7 +11,7 @@ import java.io.Serializable
 data class Post(
     @PrimaryKey
     val id: String,
-    val type: Int,
+    val type: PostType,
     val userId: String,
     val title: String,
     val text: String,
@@ -20,5 +20,15 @@ data class Post(
     val createdAt: Long = System.currentTimeMillis(),
     var updatedAt: Long = System.currentTimeMillis()
 ) : Serializable {
-    constructor() : this("", 0, "", "", "")
+    constructor() : this("", PostType.OTHER, "", "", "")
+}
+
+enum class PostType {
+    LIVESTOCK,
+    PLANTS,
+    PARAMETER_TEST,
+    PESTS,
+    FEEDING,
+    MAINTENANCE,
+    OTHER
 }
