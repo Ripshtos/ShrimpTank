@@ -55,4 +55,31 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+
+    <fragment
+        android:id="@+id/myPosts"
+        android:name="com.rip.shrimptank.ui.myPosts.MyPosts"
+        android:label="fragment_my_posts"
+        tools:layout="@layout/fragment_explore">
+        <action
+            android:id="@+id/action_myPosts_to_editPost"
+            app:destination="@id/editPost"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="selectedPost"
+            app:argType="com.rip.shrimptank.model.post.Post" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editPost"
+        android:name="com.rip.shrimptank.ui.editPost.EditPost"
+        android:label="EditPost">
+        <argument
+            android:name="selectedPost"
+            app:argType="com.rip.shrimptank.model.post.Post" />
+        <action
+            android:id="@+id/action_editPost_to_myProfile"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>
