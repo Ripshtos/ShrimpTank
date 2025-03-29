@@ -59,7 +59,7 @@ class EditPostViewModel : ViewModel() {
             return false
         }
         if (description != null && description!!.isEmpty()) {
-            descriptionError.postValue("Description cannot be empty")
+            descriptionError.postValue("Content cannot be empty")
             return false
         }
         if (type == null) {

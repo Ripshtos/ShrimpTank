@@ -117,16 +117,16 @@ class EditPost : Fragment() {
 
         viewModel.titleError.observe(viewLifecycleOwner) {
             if (it.isNotEmpty())
-                binding.editPostTitleMultiLine.error = it
+                binding.editPostTitleCardView.error = it
         }
 
         viewModel.descriptionError.observe(viewLifecycleOwner) {
             if (it.isNotEmpty())
-                binding.editPostTextMultiLine.error = it
+                binding.editPostCardView.error = it
         }
         viewModel.typeError.observe(viewLifecycleOwner) {
             if (it.isNotEmpty())
-                binding.typeAutoCompleteTextView.error = it
+                binding.menu.error = it
         }
     }
 

@@ -116,7 +116,7 @@ class EditMyProfile : Fragment() {
 
         viewModel.nameError.observe(viewLifecycleOwner) {
             if (it.isNotEmpty())
-                binding.editTextName.error = it
+                binding.layoutName.error = it
         }
     }
 

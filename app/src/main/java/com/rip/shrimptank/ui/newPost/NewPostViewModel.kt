@@ -55,7 +55,7 @@ class NewPostViewModel : ViewModel() {
             valid = false
         }
         if (description.isEmpty()) {
-            descriptionError.postValue("Description cannot be empty")
+            descriptionError.postValue("Content cannot be empty")
             valid = false
         }
         if (type == null) {

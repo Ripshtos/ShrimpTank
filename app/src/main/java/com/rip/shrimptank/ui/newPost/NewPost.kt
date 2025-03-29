@@ -104,15 +104,15 @@ class NewPost : Fragment() {
 
         viewModel.titleError.observe(viewLifecycleOwner) {
             if (it.isNotEmpty())
-                binding.editTitleText.error = it
+                binding.postTitleView.error = it
         }
         viewModel.descriptionError.observe(viewLifecycleOwner) {
             if (it.isNotEmpty())
-                binding.editPostTextMultiLine.error = it
+                binding.postCardView.error = it
         }
         viewModel.typeError.observe(viewLifecycleOwner) {
             if (it.isNotEmpty())
-                binding.typeAutoCompleteTextView.error = it
+                binding.menu.error = it
         }
 
         viewModel.imageError.observe(viewLifecycleOwner) {
