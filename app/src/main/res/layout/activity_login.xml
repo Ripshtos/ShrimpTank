@@ -23,12 +23,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:src="@drawable/shrimptank"
+            app:layout_constraintTop_toBottomOf="@+id/TitleTextView"/>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutEmailAddress"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="200dp"
             android:hint="Email"
             app:boxStrokeColor="#1E90FF"
             app:endIconMode="clear_text"
