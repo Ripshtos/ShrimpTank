@@ -15,6 +15,8 @@ import com.rip.shrimptank.model.post.Post
 import com.rip.shrimptank.model.post.PostModel
 import com.rip.shrimptank.model.user.User
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class PostCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val postImageView: ImageView?
@@ -23,6 +25,7 @@ class PostCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val title: TextView?
     val postDescription: TextView?
     val type: TextView?
+    val date: TextView?
     val editButton: Button
     val deleteButton: Button
 
@@ -34,6 +37,7 @@ class PostCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         title = itemView.findViewById(R.id.PostTitle)
         postDescription = itemView.findViewById(R.id.PostDescription)
         type = itemView.findViewById(R.id.PostType)
+        date = itemView.findViewById(R.id.date)
         editButton = itemView.findViewById(R.id.EditButton)
         deleteButton = itemView.findViewById(R.id.DeleteButton)
     }
@@ -41,8 +45,8 @@ class PostCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     @SuppressLint("SetTextI18n")
     fun bind(post: Post?, user: User?, editCallback: () -> Unit) {
         if (user?.id != Firebase.auth.currentUser!!.uid) {
-            editButton.visibility = View.GONE
-            deleteButton.visibility = View.GONE
+            editButton.visibility = View.INVISIBLE
+            deleteButton.visibility = View.INVISIBLE
         }
 
         Picasso.get()
@@ -55,6 +59,7 @@ class PostCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         title?.text = post?.title
         postDescription?.text = post?.text
         type?.text = post?.type.toString()
+        date?.text = formatDate(post?.createdAt!!)
         deleteButton.setOnClickListener {
             MaterialAlertDialogBuilder(itemView.context)
                 .setTitle("Delete Post")
@@ -75,5 +80,10 @@ class PostCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         editButton.setOnClickListener {
             editCallback()
         }
+    }
+
+    fun formatDate(date: Long): String {
+        val sdf = SimpleDateFormat("dd/MM/yyyy, HH:mm")
+        return sdf.format(Date(date))
     }
 }
