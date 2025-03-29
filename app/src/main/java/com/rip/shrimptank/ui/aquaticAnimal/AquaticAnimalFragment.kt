@@ -1,21 +1,19 @@
 package com.rip.shrimptank.ui.aquaticAnimal
 
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.rip.shrimptank.R
+import com.rip.shrimptank.model.aquaticAnimal.AquaticAnimal
 
 
 class AquaticAnimalFragment : Fragment() {
 
     private val args by navArgs<AquaticAnimalFragmentArgs>()
-    private lateinit var viewModel: AquaticAnimalViewModel
     private lateinit var root: View
 
     override fun onCreateView(
@@ -23,23 +21,14 @@ class AquaticAnimalFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         root = inflater.inflate(R.layout.fragment_aquatic_animal, container, false)
-
-        viewModel = ViewModelProvider(this)[AquaticAnimalViewModel::class.java]
-        viewModel.setAquaticAnimalDetails(args.selectedAquaticAnimal)
-        loadAquaticAnimalDetails(root)
+        loadAquaticAnimalDetails(args.selectedAquaticAnimal)
 
         return root
     }
 
-    private fun loadAquaticAnimalDetails(root: View) {
-        val aquaticAnimalName: TextView = root.findViewById(R.id.aquaticAnimalName)
-        val aquaticAnimalDescription: TextView = root.findViewById(R.id.aquaticAnimalDescription)
-
-        viewModel.aquaticAnimalDetailsData?.let { aquaticAnimal ->
-            aquaticAnimalName.text = aquaticAnimal.name
-
-            aquaticAnimalDescription.text = aquaticAnimal.info
-            aquaticAnimalDescription.movementMethod = ScrollingMovementMethod()
-        }
+    private fun loadAquaticAnimalDetails(aquaticAnimal: AquaticAnimal) {
+        root.findViewById<TextView>(R.id.aquaticAnimalName).text = aquaticAnimal.name
+        root.findViewById<TextView>(R.id.aquaticAnimalType).text = aquaticAnimal.aquariumType
+        root.findViewById<TextView>(R.id.aquaticAnimalDescription).text = aquaticAnimal.info
     }
 }

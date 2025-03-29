@@ -43,18 +43,10 @@ class Search : Fragment() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 viewModel.refreshAquaticAnimals(query)
-                viewModel.clearAquaticAnimals()
-
-                binding.SearchTextView.visibility = View.GONE
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                if (viewModel.aquaticAnimals.value?.isNotEmpty() == true)
-                    binding.SearchTextView.visibility = View.GONE
-                else
-                    binding.SearchTextView.visibility = View.VISIBLE
-
                 return false
             }
         })
