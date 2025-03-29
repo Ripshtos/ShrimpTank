@@ -2,31 +2,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:enabled="true"
-        android:icon="@drawable/store_image"
+        android:icon="@drawable/ic_home"
         android:id="@+id/homeFragment"
-        android:title="store" />
+        android:title="Home" />
 
     <item
         android:enabled="true"
-        android:icon="@drawable/store_image"
+        android:icon="@drawable/baseline_collections_24"
         android:id="@+id/myPosts"
-        android:title="my posts" />
+        android:title="My Posts" />
 
     <item
         android:enabled="true"
-        android:icon="@drawable/store_image"
+        android:icon="@drawable/ic_search"
         android:id="@+id/search"
-        android:title="aquatic animal search" />
+        android:title="Search" />
 
     <item
         android:enabled="true"
-        android:icon="@drawable/store_image"
+        android:icon="@drawable/baseline_diversity_3_20"
         android:id="@+id/explore"
-        android:title="explore" />
+        android:title="Explore" />
 
     <item
         android:enabled="true"
         android:icon="@drawable/ic_person"
         android:id="@+id/profile"
-        android:title="profile" />
+        android:title="Profile" />
 </menu>
