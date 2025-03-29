@@ -5,15 +5,18 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.rip.shrimptank.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.rip.shrimptank.model.post.Post
+import com.rip.shrimptank.model.post.PostModel
 import com.rip.shrimptank.model.user.User
 import com.squareup.picasso.Picasso
 
-class MyPostsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+class PostCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val postImageView: ImageView?
     val profileImageView: ImageView?
     val profileName: TextView?
@@ -36,12 +39,12 @@ class MyPostsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     @SuppressLint("SetTextI18n")
-    fun bind(
-        post: Post?,
-        user: User?,
-        editPostClickListener: () -> Unit,
-        deletePostClickListener: () -> Unit
-    ) {
+    fun bind(post: Post?, user: User?, editCallback: () -> Unit) {
+        if (user?.id != Firebase.auth.currentUser!!.uid) {
+            editButton.visibility = View.GONE
+            deleteButton.visibility = View.GONE
+        }
+
         Picasso.get()
             .load(post?.postImage)
             .into(postImageView)
@@ -59,12 +62,18 @@ class MyPostsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 .setNeutralButton("Cancel") { _, _ ->
                 }
                 .setPositiveButton("Delete") { _, _ ->
-                    deletePostClickListener()
+                    PostModel.instance.deletePost(post) {
+                        Toast.makeText(
+                            itemView.context,
+                            "Post deleted",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
                 .show()
         }
         editButton.setOnClickListener {
-            editPostClickListener()
+            editCallback()
         }
     }
 }

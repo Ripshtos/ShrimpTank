@@ -12,33 +12,24 @@ import com.rip.shrimptank.model.post.PostModel
 import com.rip.shrimptank.model.user.User
 
 class MyPostsRecycleAdapter(var posts: MutableList<Post>?, var user: User?) :
-    RecyclerView.Adapter<MyPostsViewHolder>() {
+    RecyclerView.Adapter<PostCardViewHolder>() {
 
     override fun getItemCount(): Int {
         return posts?.size ?: 0
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPostsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostCardViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_my_posts_card, parent, false)
-        return MyPostsViewHolder(itemView)
+        return PostCardViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: MyPostsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PostCardViewHolder, position: Int) {
         val post = posts?.get(position)
         Log.d("TAG", "posts size ${posts?.size}")
-        holder.bind(post, user, {
+        holder.bind(post, user) {
             val action = MyPostsDirections.actionMyPostsToEditPost(post!!)
             Navigation.findNavController(holder.itemView).navigate(action)
-        },
-            {
-                PostModel.instance.deletePost(post) {
-                    Toast.makeText(
-                        holder.itemView.context,
-                        "Post deleted!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+        }
     }
 }

@@ -35,9 +35,7 @@ class EditMyProfileViewModel : ViewModel() {
         super.onCleared()
     }
 
-    fun updateUser(
-        updatedUserCallback: () -> Unit
-    ) {
+    fun updateUser(updatedUserCallback: () -> Unit) {
         if (validateUserUpdate()) {
             _isUpdating.value = true
             val updatedUser = User(
