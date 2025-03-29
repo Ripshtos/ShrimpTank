@@ -31,15 +31,14 @@
                 android:gravity="center_vertical"
                 android:weightSum="10">
 
-                <!-- Profile Image -->
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ProfileImageView"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="8dp"
-                    android:background="@android:color/darker_gray"
                     android:scaleType="centerCrop"
-                    android:layout_weight="1"/>
+                    app:shapeAppearanceOverlay="@style/CircleImageView"
+                    />
 
                 <!-- Profile Name -->
                 <TextView
