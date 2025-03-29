@@ -96,37 +96,26 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.card.MaterialCardView
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editPostCardView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editPostTitleCardView">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
+                android:id="@+id/editPostTextMultiLine"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                app:boxBackgroundMode="none">
+                android:layout_height="150dp"
+                android:gravity="top"
+                android:hint="Content"
+                android:inputType="textMultiLine"
+                android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/editPostTextMultiLine"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:background="@null"
-                    android:gravity="top"
-                    android:hint="Post Text"
-                    android:inputType="textMultiLine"
-                    android:padding="12dp"
-                    android:textColor="#303030"
-                    android:textSize="16sp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <ProgressBar

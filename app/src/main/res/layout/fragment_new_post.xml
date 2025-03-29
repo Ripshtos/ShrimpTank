@@ -96,37 +96,25 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/postCardView"
-            android:layout_width="0dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/postTitleView">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
+                android:id="@+id/editPostTextMultiLine"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                app:boxBackgroundMode="none">
+                android:layout_height="150dp"
+                android:hint="Content"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/editPostTextMultiLine"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:background="@null"
-                    android:gravity="top"
-                    android:hint="Post Content"
-                    android:inputType="textMultiLine"
-                    android:padding="12dp"
-                    android:textColor="#303030"
-                    android:textSize="16sp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ProgressBar
             android:id="@+id/uploadProgressBar"
