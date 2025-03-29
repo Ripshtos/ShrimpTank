@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/profile"
         android:name="com.rip.shrimptank.ui.profile.Profile"
-        android:label="fragment_profile"
+        android:label="Profile"
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profile_to_editMyProfile"
@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/editMyProfile"
         android:name="com.rip.shrimptank.ui.profile.EditMyProfile"
-        android:label="fragment_edit_profile"
+        android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_profile">
         <action
             android:id="@+id/action_edit_profile_to_profile"
@@ -47,7 +47,7 @@
     <fragment
         android:id="@+id/newPost"
         android:name="com.rip.shrimptank.ui.newPost.NewPost"
-        android:label="fragment_new_post"
+        android:label="New Post"
         tools:layout="@layout/fragment_new_post">
         <action
             android:id="@+id/action_new_post_to_explore"
@@ -59,7 +59,7 @@
     <fragment
         android:id="@+id/myPosts"
         android:name="com.rip.shrimptank.ui.myPosts.MyPosts"
-        android:label="fragment_my_posts"
+        android:label="My Posts"
         tools:layout="@layout/fragment_explore">
         <action
             android:id="@+id/action_myPosts_to_editPost"
@@ -74,7 +74,7 @@
     <fragment
         android:id="@+id/editPost"
         android:name="com.rip.shrimptank.ui.editPost.EditPost"
-        android:label="EditPost">
+        android:label="Edit Post">
         <argument
             android:name="selectedPost"
             app:argType="com.rip.shrimptank.model.post.Post" />
@@ -87,7 +87,7 @@
     <fragment
         android:id="@+id/aquaticAnimalFragment"
         android:name="com.rip.shrimptank.ui.aquaticAnimal.AquaticAnimalFragment"
-        android:label="aquaticAnimalFragment">
+        android:label="Aquatic Animal Info">
         <argument
             android:name="selectedAquaticAnimal"
             app:argType="com.rip.shrimptank.model.aquaticAnimal.AquaticAnimal" />
@@ -96,7 +96,7 @@
     <fragment
         android:id="@+id/search"
         android:name="com.rip.shrimptank.ui.search.Search"
-        android:label="fragment_search"
+        android:label="Aquatic Animal Search"
         tools:layout="@layout/fragment_search">
     <action
         android:id="@+id/action_search_to_aquaticAnimalFragment"
