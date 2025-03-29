@@ -13,17 +13,6 @@
         android:layout_height="wrap_content"
         android:padding="24dp">
 
-        <TextView
-            android:id="@+id/WelcomeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Edit Profile"
-            android:textColor="#212121"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ProfileImageView"
             android:layout_width="150dp"
@@ -32,8 +21,9 @@
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/WelcomeTextView"
-            app:shapeAppearanceOverlay="@style/CircleImageView" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/CircleImageView"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPickImage"
