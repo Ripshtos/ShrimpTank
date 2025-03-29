@@ -82,4 +82,26 @@
             android:id="@+id/action_editPost_to_myProfile"
             app:destination="@id/homeFragment" />
     </fragment>
+
+
+    <fragment
+        android:id="@+id/aquaticAnimalFragment"
+        android:name="com.rip.shrimptank.ui.aquaticAnimal.AquaticAnimalFragment"
+        android:label="aquaticAnimalFragment">
+        <argument
+            android:name="selectedAquaticAnimal"
+            app:argType="com.rip.shrimptank.model.aquaticAnimal.AquaticAnimal" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/search"
+        android:name="com.rip.shrimptank.ui.search.Search"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search">
+    <action
+        android:id="@+id/action_search_to_aquaticAnimalFragment"
+        app:destination="@id/aquaticAnimalFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
 </navigation>

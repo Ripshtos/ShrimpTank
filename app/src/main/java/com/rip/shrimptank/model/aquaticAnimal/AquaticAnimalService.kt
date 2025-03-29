@@ -6,5 +6,5 @@ import retrofit2.http.Query
 
 interface AquaticAnimalService {
     @GET("aquarium")
-    fun searchAquaticAnimals(@Query("query") query: String, ): Call<AquaticAnimalApiResponse>
+    fun searchAquaticAnimals(@Query("query") query: String, ): Call<List<AquaticAnimal>>
 }

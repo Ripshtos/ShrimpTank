@@ -14,7 +14,7 @@ class AquaticAnimalServiceClient private constructor() {
     }
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://node31.cs.colman.ac.il/")
+        .baseUrl("https://tsabar.pro/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -28,20 +28,20 @@ class AquaticAnimalServiceClient private constructor() {
         val encodedSearch = URLEncoder.encode(query, "UTF-8")
         val searchAnimals = aquaticAnimalService.searchAquaticAnimals(encodedSearch)
 
-        searchAnimals.enqueue(object : Callback<AquaticAnimalApiResponse> {
+        searchAnimals.enqueue(object : Callback<List<AquaticAnimal>> {
             override fun onResponse(
-                call: Call<AquaticAnimalApiResponse>,
-                response: Response<AquaticAnimalApiResponse>
+                call: Call<List<AquaticAnimal>>,
+                response: Response<List<AquaticAnimal>>
             ) {
                 if (response.isSuccessful) {
-                    val animalList = response.body()?.results
+                    val animalList = response.body()
                     callback(animalList as? MutableList<AquaticAnimal> ?: mutableListOf())
                 } else {
                     throw Exception("Failed to fetch aquatic animals")
                 }
             }
 
-            override fun onFailure(call: Call<AquaticAnimalApiResponse>, t: Throwable) {
+            override fun onFailure(call: Call<List<AquaticAnimal>>, t: Throwable) {
                 throw t
             }
         })
