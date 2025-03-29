@@ -41,6 +41,11 @@ class PostModel private constructor() {
         return database.postDao().getPostsByUserId(Firebase.auth.currentUser?.uid!!)
     }
 
+    fun getMyPostsByType(type: PostType): LiveData<MutableList<Post>> {
+        refreshAllPosts()
+        return database.postDao().getPostsByUserIdAndType(Firebase.auth.currentUser?.uid!!, type)
+    }
+
     fun refreshAllPosts() {
         if (posts == null) {
             posts = database.postDao().getAll()
