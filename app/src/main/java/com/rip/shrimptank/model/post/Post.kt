@@ -26,7 +26,7 @@ data class Post(
 enum class PostType {
     LIVESTOCK,
     PLANTS,
-    PARAMETER_TEST,
+    PARAMETERS,
     PESTS,
     FEEDING,
     MAINTENANCE,

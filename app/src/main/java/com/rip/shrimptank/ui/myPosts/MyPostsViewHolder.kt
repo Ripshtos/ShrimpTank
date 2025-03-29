@@ -51,7 +51,7 @@ class MyPostsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         profileName?.text = user?.name ?: ""
         title?.text = post?.title
         postDescription?.text = post?.text
-        type?.text = "Type: ${post?.type}"
+        type?.text = post?.type.toString()
         deleteButton.setOnClickListener {
             MaterialAlertDialogBuilder(itemView.context)
                 .setTitle("Delete Post")

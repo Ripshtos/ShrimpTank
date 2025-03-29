@@ -38,6 +38,6 @@ class ExploreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         profileName?.text = user?.name ?: ""
         postTitle?.text = post?.title
         postDescription?.text = post?.text
-        type?.text = "Type: ${post?.type}"
+        type?.text = post?.type.toString()
     }
 }
