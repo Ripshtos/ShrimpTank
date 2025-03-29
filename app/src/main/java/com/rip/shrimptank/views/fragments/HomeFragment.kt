@@ -37,22 +37,6 @@ class HomeFragment : Fragment() {
 
         val fab: View = view.findViewById(R.id.fab)
 
-        fab.setOnClickListener { showPopupMenu(it) }
-    }
-
-    private fun showPopupMenu(view: View) {
-        val popupMenu = PopupMenu(requireContext(), view)
-        popupMenu.menuInflater.inflate(R.menu.fab_menu, popupMenu.menu)
-        popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
-            when (menuItem.itemId) {
-                R.id.action_add_post -> {
-                    findNavController().navigate(R.id.action_homeFragment_to_addPostFragment)
-                    true
-                }
-                else -> false
-            }
-        }
-
-        popupMenu.show()
+        fab.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_addPostFragment) }
     }
 }
