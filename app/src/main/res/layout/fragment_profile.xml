@@ -17,13 +17,13 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginTop="120dp"
-            android:elevation="4dp"
             android:padding="4dp"
             android:scaleType="centerCrop"
             android:background="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/CircleImageView" />
 
         <TextView
             android:id="@+id/UserNameTextView"
@@ -37,25 +37,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ProfileImageView" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/optionsCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/UserNameTextView">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp">
+                android:padding="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/UserNameTextView">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/EditMyProfileButton"
@@ -68,19 +57,10 @@
                     android:paddingBottom="12dp"
                     android:text="Edit Profile"
                     android:textAlignment="textStart"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#1E88E5"
                     android:textAllCaps="false"
-                    android:textColor="#303F9F"
-                    android:textSize="16sp"
-                    app:iconGravity="textStart"
-                    app:iconPadding="16dp"
-                    app:iconTint="#303F9F" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="56dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="#E0E0E0" />
+                    android:textSize="16sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/LogOutButton"
@@ -92,15 +72,12 @@
                     android:paddingEnd="16dp"
                     android:paddingBottom="12dp"
                     android:text="Logout"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#1E88E5"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
-                    android:textColor="#303F9F"
-                    android:textSize="16sp"
-                    app:iconGravity="textStart"
-                    app:iconPadding="16dp"
-                    app:iconTint="#303F9F" />
+                    android:textSize="16sp" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
