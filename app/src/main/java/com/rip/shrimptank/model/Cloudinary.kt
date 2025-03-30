@@ -1,7 +1,7 @@
 package com.rip.shrimptank.model
 
 import android.content.Context
-import android.graphics.Bitmap
+import android.net.Uri
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
@@ -9,7 +9,7 @@ import com.cloudinary.android.policy.GlobalUploadPolicy
 import com.cloudinary.android.policy.UploadPolicy
 import com.rip.shrimptank.ShrimpTank
 import java.io.File
-import java.io.FileOutputStream
+import kotlin.collections.get
 
 class Cloudinary private constructor() {
 
@@ -34,12 +34,12 @@ class Cloudinary private constructor() {
     }
 
     fun uploadBitmap(
-        bitmap: Bitmap,
+        uri: Uri,
         onSuccess: (String) -> Unit,
         onError: (String) -> Unit
     ) {
         val context = ShrimpTank.Globals.context ?: return
-        val file = bitmapToFile(bitmap, context)
+        val file = uriToFile(uri, context)
 
         MediaManager.get().upload(file.path)
             .option("folder", "images")
@@ -60,29 +60,14 @@ class Cloudinary private constructor() {
             .dispatch()
     }
 
-    private fun bitmapToFile(bitmap: Bitmap, context: Context): File {
+    private fun uriToFile(uri: Uri, context: Context): File {
+        val inputStream = context.contentResolver.openInputStream(uri)
         val file = File(context.cacheDir, "temp_image_${System.currentTimeMillis()}.jpg")
-        FileOutputStream(file).use { outputStream ->
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        inputStream.use { input ->
+            file.outputStream().use { output ->
+                input?.copyTo(output)
+            }
         }
         return file
-    }
-
-    fun add(user: User, profileImage: Bitmap?, storage: Storage, callback: () -> Unit) {
-        profileImage?.let {
-            when (storage) {
-                Storage.CLOUDINARY -> {
-                    uploadBitmap(it, { url ->
-                        val updatedUser = user.copy(avatar = url)
-                        // Save updated user to Firebase or local DB (if needed)
-                        callback()
-                    }, { callback() })
-                }
-            }
-        } ?: callback()
-    }
-
-    enum class Storage {
-        CLOUDINARY
     }
 }

@@ -2,45 +2,114 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_home_graph"
+    android:id="@+id/nav_main_graph"
     app:startDestination="@id/homeFragment">
-
-
-        <fragment
-            android:id="@+id/profileFragment"
-            android:name="com.rip.shrimptank.views.fragments.ProfileFragment"
-            android:label="Profile"
-            tools:layout="@layout/fragment_profile">
-            <action
-                android:id="@+id/action_profile_to_editProfile"
-                app:popUpToInclusive="true"
-                app:popUpTo="@id/profileFragment"
-                app:destination="@id/editProfileFragment" />
-        </fragment>
-
-        <fragment
-            android:id="@+id/editProfileFragment"
-            android:name="com.rip.shrimptank.views.fragments.EditProfileFragment"
-            android:label="Edit Profile"
-            tools:layout="@layout/fragment_edit_profile">
-
-            <action
-                android:id="@+id/action_editProfile_to_profile"
-                app:popUpToInclusive="true"
-                app:popUpTo="@id/editProfileFragment"
-                app:destination="@id/profileFragment" />
-        </fragment>
-
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.rip.shrimptank.views.fragments.HomeFragment"
-        android:label="HomeFragment" />
+        android:name="com.rip.shrimptank.ui.home.HomeFragment"
+        android:label="Tank Dashboard">
+        <action
+            android:id="@+id/action_homeFragment_to_addPostFragment"
+            app:destination="@id/newPost"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
 
     <fragment
-        android:id="@+id/cartFragment"
-        android:name="com.rip.shrimptank.views.fragments.CartFragment"
-        android:label="Cart"
-        tools:layout="@layout/fragment_cart" />
+        android:id="@+id/explore"
+        android:name="com.rip.shrimptank.ui.explore.Explore"
+        android:label="Explore">
+        <action
+            android:id="@+id/action_myPosts_to_editPost"
+            app:destination="@id/editPost"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="selectedPost"
+            app:argType="com.rip.shrimptank.model.post.Post" />
+    </fragment>
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.rip.shrimptank.ui.profile.Profile"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profile_to_editMyProfile"
+            app:destination="@id/editMyProfile"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editMyProfile"
+        android:name="com.rip.shrimptank.ui.profile.EditMyProfile"
+        android:label="Edit Profile"
+        tools:layout="@layout/fragment_edit_profile">
+        <action
+            android:id="@+id/action_edit_profile_to_profile"
+            app:destination="@id/profile"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newPost"
+        android:name="com.rip.shrimptank.ui.newPost.NewPost"
+        android:label="New Post"
+        tools:layout="@layout/fragment_new_post">
+        <action
+            android:id="@+id/action_new_post_to_explore"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/myPosts"
+        android:name="com.rip.shrimptank.ui.myPosts.MyPosts"
+        android:label="My Posts"
+        tools:layout="@layout/fragment_explore">
+        <action
+            android:id="@+id/action_myPosts_to_editPost"
+            app:destination="@id/editPost"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="selectedPost"
+            app:argType="com.rip.shrimptank.model.post.Post" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editPost"
+        android:name="com.rip.shrimptank.ui.editPost.EditPost"
+        android:label="Edit Post">
+        <argument
+            android:name="selectedPost"
+            app:argType="com.rip.shrimptank.model.post.Post" />
+        <action
+            android:id="@+id/action_editPost_to_myProfile"
+            app:destination="@id/homeFragment" />
+    </fragment>
 
 
+    <fragment
+        android:id="@+id/aquaticAnimalFragment"
+        android:name="com.rip.shrimptank.ui.aquaticAnimal.AquaticAnimalFragment"
+        android:label="Aquatic Animal Info">
+        <argument
+            android:name="selectedAquaticAnimal"
+            app:argType="com.rip.shrimptank.model.aquaticAnimal.AquaticAnimal" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/search"
+        android:name="com.rip.shrimptank.ui.search.Search"
+        android:label="Aquatic Animal Search"
+        tools:layout="@layout/fragment_search">
+    <action
+        android:id="@+id/action_search_to_aquaticAnimalFragment"
+        app:destination="@id/aquaticAnimalFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
 </navigation>

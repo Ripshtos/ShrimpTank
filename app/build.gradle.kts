@@ -6,6 +6,7 @@ plugins {
     id("kotlin-parcelize")
 
     id("com.google.gms.google-services")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -50,6 +51,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.swiperefreshlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -103,5 +105,6 @@ dependencies {
     // RETROFIT
     implementation(libs.retrofit)
     implementation(libs.gson)
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
 }

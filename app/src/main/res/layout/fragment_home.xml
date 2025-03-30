@@ -6,29 +6,134 @@
     android:id="@+id/homeFragmentRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.activities.MainActivity">
+    tools:context=".ui.MainActivity">
 
-    <!-- An optional title or heading for the fragment -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
     <TextView
-        android:id="@+id/titleText"
+        android:id="@+id/livestock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My Shop"
+        android:text="Livestock"
         android:textSize="24sp"
-        android:layout_margin="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_margin="16dp"/>
 
-    <!-- RecyclerView to display products from Firestore -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/homeRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:clipToPadding="false"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/livestock_posts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.rip.shrimptank.ui.home.MyLivestockPosts" />
+
+    <TextView
+        android:id="@+id/plants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Plants"
+        android:textSize="24sp"
+        android:layout_margin="16dp"/>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/plants_posts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.rip.shrimptank.ui.home.MyPlantsPosts"/>
+
+    <TextView
+        android:id="@+id/parameters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Parameters"
+        android:textSize="24sp"
+        android:layout_margin="16dp" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/parameters_posts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.rip.shrimptank.ui.home.MyParametersPosts" />
+
+    <TextView
+        android:id="@+id/pests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pests"
+        android:textSize="24sp"
+        android:layout_margin="16dp" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/pests_posts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.rip.shrimptank.ui.home.MyPestsPosts" />
+
+    <TextView
+        android:id="@+id/feeding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Feeding"
+        android:textSize="24sp"
+        android:layout_margin="16dp"/>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/feeding_posts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.rip.shrimptank.ui.home.MyFeedingPosts" />
+
+    <TextView
+        android:id="@+id/maintenance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Maintenance"
+        android:textSize="24sp"
+        android:layout_margin="16dp" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/maintenance_posts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.rip.shrimptank.ui.home.MyMaintenancePosts" />
+
+    <TextView
+        android:id="@+id/other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Other"
+        android:textSize="24sp"
+        android:layout_margin="16dp" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/other_posts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.rip.shrimptank.ui.home.MyOtherPosts" />
+
+    </LinearLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:layout_constraintTop_toBottomOf="@id/titleText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:backgroundTint="@color/teal_700"
+        app:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
